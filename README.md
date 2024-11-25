@@ -1,5 +1,5 @@
 
-﻿# fc3-admin-do-catalogo
+## fc3-admin-do-catalogo
 
 API Rest para operações do serviço fc3-admin-do-catalogo.
 

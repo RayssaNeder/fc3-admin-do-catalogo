@@ -1,11 +1,12 @@
 package com.fullcycle.admin.catalogo.domain.category;
 
+import com.fullcycle.admin.catalogo.domain.AggregateRoot;
+
 import java.time.Instant;
 import java.util.UUID;
 
-public class Category {
+public class Category extends AggregateRoot<CategoryID> {
 
-    private String id;
     private String name;
     private String description;
     private boolean active;
@@ -14,30 +15,31 @@ public class Category {
     private Instant deletedAt;
 
     private Category(
-           final String id,
-           final String name,
-           final String description,
-           final boolean active,
-           final Instant updatedAt,
-           final Instant createdAt,
-           final Instant deletedAt) {
-        this.deletedAt = deletedAt;
-        this.updatedAt = updatedAt;
-        this.createdAt = createdAt;
-        this.active = active;
-        this.description = description;
-        this.name = name;
-        this.id = id;
+            final CategoryID anId,
+            final String aName,
+            final String aDescription,
+            final boolean isActive,
+            final Instant aUpdatedAt,
+            final Instant aCreatedAt,
+            final Instant aDeletedAt) {
+        super(anId);
+        this.deletedAt = aDeletedAt;
+        this.updatedAt = aUpdatedAt;
+        this.createdAt = aCreatedAt;
+        this.active = isActive;
+        this.description = aDescription;
+        this.name = aName;
+
     }
 
     public static Category newCategory(
-            final String name,
-            final String description,
+            final String aName,
+            final String aDescription,
             final boolean active){
 
-       final var id = UUID.randomUUID().toString();
+       final var id = CategoryID.unique();
        final var now =  Instant.now();
-        return new Category(id, name, description,active, now, now, null);
+        return new Category(id, aName, aDescription,active, now, now, null);
     }
 
     //getters ans setters
@@ -89,13 +91,10 @@ public class Category {
     public void setName(String name) {
         this.name = name;
     }
-
-    public String getId() {
+    
+    public CategoryID getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 }
 

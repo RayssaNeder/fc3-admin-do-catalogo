@@ -2,12 +2,22 @@ plugins {
     id 'java'
 }
 
+subprojects {
+    apply plugin: 'java'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
+
+    repositories {
+        mavenCentral()
+    }
+}
+
 group = 'com.fullcycle.admin.catalogo'
 version = '1.0-SNAPSHOT'
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.9.1')

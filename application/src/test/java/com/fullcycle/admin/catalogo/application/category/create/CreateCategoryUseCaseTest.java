@@ -40,7 +40,7 @@ public class CreateCategoryUseCaseTest {
 
         when(categoryGateway.create(any())).thenAnswer(returnsFirstArg());
 
-        final var actualOutput = useCase.execute(aCommand);
+        final var actualOutput = useCase.execute(aCommand).get();
 
         Assertions.assertNotNull(actualOutput);
         Assertions.assertNotNull(actualOutput.id());
@@ -71,14 +71,11 @@ public class CreateCategoryUseCaseTest {
 
         final var aCommand = CreateCategoryCommand.with(null, expectedDescription,expectedIsActive);
 
-        DomainException exception = Assertions.assertThrows(
-                DomainException.class,
-                () -> useCase.execute(aCommand) // chamada que deve falhar
-        );
+        final var notification = useCase.execute(aCommand).getLeft(); // chamada que deve falhar
 
-        Assertions.assertEquals(expectedMessage, exception.getErrors().get(0).message());
-        Assertions.assertEquals(1, exception.getErrors().size());
 
+        Assertions.assertEquals(expectedMessage, notification.firstError().message());
+        Assertions.assertEquals(1, notification.getErrors().size());
         //valida que o gateway nao tenha sido chamado nenhuma vez
         verify(categoryGateway, times(0)).create(any());
 
@@ -97,7 +94,7 @@ public class CreateCategoryUseCaseTest {
 
         when(categoryGateway.create(any())).thenAnswer(returnsFirstArg());
 
-        final var actualOutput = useCase.execute(aCommand);
+        final var actualOutput = useCase.execute(aCommand).get();
 
         Assertions.assertNotNull(actualOutput);
         Assertions.assertNotNull(actualOutput.id());
@@ -132,12 +129,12 @@ public class CreateCategoryUseCaseTest {
 
         when(categoryGateway.create(any())).thenThrow(new IllegalStateException("Gateway Error"));
 
-        var exception = Assertions.assertThrows(
-                IllegalStateException.class,
-                () -> useCase.execute(aCommand) // chamada que deve falhar
-        );
 
-        Assertions.assertEquals(expectedMessage, exception.getMessage());
+               final var notification = useCase.execute(aCommand).getLeft(); // chamada que deve falhar
+
+
+        Assertions.assertEquals(expectesErrorCount, notification.getErrors().size());
+        Assertions.assertEquals(expectedMessage,notification.firstError().message());
 
         //valida que o gateway tenha sido chamado 1 vez
 

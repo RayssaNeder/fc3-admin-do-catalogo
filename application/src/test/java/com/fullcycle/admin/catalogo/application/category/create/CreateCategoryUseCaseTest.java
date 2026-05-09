@@ -139,18 +139,17 @@ public class CreateCategoryUseCaseTest {
         //valida que o gateway tenha sido chamado 1 vez
 
         verify(categoryGateway, times(1))
-                .create(argThat(aCategory -> {
+            .create(argThat(aCategory -> {
+                return Objects.equals(expectedName, aCategory.getName())
+                        && Objects.equals(expectedDescription, aCategory.getDescription())
+                        && Objects.equals(expectedIsActive, aCategory.isActive())
+                        && Objects.nonNull(aCategory.getId())
+                        && Objects.nonNull(aCategory.getCreatedAt())
+                        && Objects.nonNull(aCategory.getUpdatedAt())
+                        && Objects.isNull(aCategory.getDeletedAt());
+                }
 
-                            return Objects.equals(expectedName, aCategory.getName())
-                                    && Objects.equals(expectedDescription, aCategory.getDescription())
-                                    && Objects.equals(expectedIsActive, aCategory.isActive())
-                                    && Objects.nonNull(aCategory.getId())
-                                    && Objects.nonNull(aCategory.getCreatedAt())
-                                    && Objects.nonNull(aCategory.getUpdatedAt())
-                                    && Objects.isNull(aCategory.getDeletedAt());
-                        }
-
-                ));
+            ));
 
     }
 

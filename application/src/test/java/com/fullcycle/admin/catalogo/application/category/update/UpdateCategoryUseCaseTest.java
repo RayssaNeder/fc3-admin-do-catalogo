@@ -8,10 +8,12 @@ import com.fullcycle.admin.catalogo.domain.category.CategoryGateway;
 import com.fullcycle.admin.catalogo.domain.category.CategoryID;
 import com.fullcycle.admin.catalogo.domain.exceptions.DomainException;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Objects;
@@ -31,6 +33,10 @@ public class UpdateCategoryUseCaseTest {
     @Mock //Cria um mock isolado de uma classe ou interface.Esse objeto simulado não tem lógica real, apenas responde conforme você configurar com when(...) ou doReturn(...).É útil para substituir dependências externas em testes.
     CategoryGateway categoryGateway;
 
+    @BeforeEach
+    void cleanUp(){
+        Mockito.reset(categoryGateway);
+    }
 
     //Teste caminhp feliz
     @Test

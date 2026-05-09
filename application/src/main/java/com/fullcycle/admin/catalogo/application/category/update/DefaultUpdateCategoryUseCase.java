@@ -35,7 +35,7 @@ public class DefaultUpdateCategoryUseCase extends UpdateCategoryUseCase {
 
 
         final var aCategory = categoryGateway.findById(anId)
-                .orElseThrow(() -> DomainException.with(new Error("Category with ID %s was not found")));
+                .orElseThrow(() -> DomainException.with(new Error(String.format("Category with ID %s was not found", anId.getValue()))));
 
 
         aCategory.update(aName, aDescription,isActive).validate(notification);
